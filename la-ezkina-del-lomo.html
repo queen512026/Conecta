@@ -251,7 +251,7 @@ function renderMenu(){
       <div class="item">
         <img
           class="product-photo"
-          src="${fotos[(sectionIndex + itemIndex) % fotos.length]}"
+          src="${fotos[item[0].toLowerCase()] ? fotos[item[0].toLowerCase()] : ''}"
           alt="${item[0]}"
         >
         <div class="product-details">
