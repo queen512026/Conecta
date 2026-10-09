@@ -235,25 +235,53 @@ function money(n){ return "S/ " + n.toFixed(2); }
 function renderMenu(){
   const menu = document.getElementById("menu");
 
-  const fotos = {
-    "lomo de casa": "lomo%20de%20casa.jpeg",
-    "lomo montado o a lo pobre": "lomo%20montado%20o%20a%20lo%20pobre.jpeg",
-    "pollo saltado a lo pobre": "pollo%20saltado%20a%20lo%20pobre.jpeg",
-    "pollo saltado con tallarines verdes": "pollo%20saltado%20con%20tallarines%20verdes.jpeg",
-    "pollo saltado": "pollo%20saltado.jpeg",
-    "tallarines a la huancaina con lomo de casa": "tallarines%20a%20la%20huancaina%20con%20lomo%20de%20casa.jpeg",
-    "tallarines verdes con nuggets": "tallarines%20verdes%20con%20nuggets.jpeg"
-  };
+ 
+const fotos = {
+  "Saltados": "lomo%20de%20casa.jpeg",
+  "Tallarín saltado": "pollo%20saltado.jpeg",
+  "Tallarines verdes": "pollo%20saltado%20con%20tallarines%20verdes.jpeg",
+  "Tallarines a la huancaína": "tallarines%20a%20la%20huancaina%20con%20lomo%20de%20casa.jpeg",
+  "Carnes": "lomo%20montado%20o%20a%20lo%20pobre.jpeg",
+  "Platos para niños": "tallarines%20verdes%20con%20nuggets.jpeg",
+  "Entradas": "pollo%20saltado%20a%20lo%20pobre.jpeg"
+};
 
-  menu.innerHTML = sections.map((section, sectionIndex) => `
+
+menu.innerHTML = sections.map((section, sectionIndex) => {
+  const titulo = section.title
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+
+  let fotoCategoria = "";
+
+  if (titulo.includes("saltados") && !titulo.includes("tallarin")) {
+    fotoCategoria = fotos["lomo de casa"];
+  } else if (titulo.includes("tallarin") && titulo.includes("verde")) {
+    fotoCategoria = fotos["pollo saltado con tallarines verdes"];
+  } else if (titulo.includes("huancaina")) {
+    fotoCategoria = fotos["tallarines a la huancaina con lomo de casa"];
+  } else if (titulo.includes("nino")) {
+    fotoCategoria = fotos["tallarines verdes con nuggets"];
+  } else if (titulo.includes("carne")) {
+    fotoCategoria = fotos["lomo montado o a lo pobre"];
+  } else if (titulo.includes("entrada")) {
+    fotoCategoria = fotos["pollo saltado a lo pobre"];
+  } else if (titulo.includes("tallarin")) {
+    fotoCategoria = fotos["pollo saltado"];
+  }
+
+  return `
     <h2 class="category">${section.title}</h2>
     ${section.items.map((item, itemIndex) => `
       <div class="item">
-        <img
-          class="product-photo"
-          src="${fotos[item[0].toLowerCase()] ? fotos[item[0].toLowerCase()] : ''}"
-          alt="${item[0]}"
-        >
+        ${fotoCategoria ? `
+          <img
+            class="product-photo"
+            src="${fotoCategoria}"
+            alt="${item[0]}"
+          >
+        ` : ""}
         <div class="product-details">
           <div class="name">${item[0]}</div>
           <div class="price">${money(item[1])}</div>
@@ -264,9 +292,9 @@ function renderMenu(){
         </div>
       </div>
     `).join("")}
-  `).join("");
+  `;
+}).join("");
 }
-
 
 function addItem(sectionIndex, itemIndex){
   const section = sections[sectionIndex];
