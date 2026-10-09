@@ -208,25 +208,39 @@ let cart = [];
 
 function money(n){ return "S/ " + n.toFixed(2); }
 
+
 function renderMenu(){
   const menu = document.getElementById("menu");
+
+  const fotos = [
+    "https://images.unsplash.com/photo-1512058564366-18510be2db19?w=500",
+    "https://images.unsplash.com/photo-1547592180-85f173990554?w=500",
+    "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500",
+    "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=500"
+  ];
 
   menu.innerHTML = sections.map((section, sectionIndex) => `
     <h2 class="category">${section.title}</h2>
     ${section.items.map((item, itemIndex) => `
       <div class="item">
-        <div>
+        <img
+          class="product-photo"
+          src="${fotos[(sectionIndex + itemIndex) % fotos.length]}"
+          alt="${item[0]}"
+        >
+        <div class="product-details">
           <div class="name">${item[0]}</div>
           <div class="price">${money(item[1])}</div>
+          <button type="button"
+            onclick="addItem(${sectionIndex}, ${itemIndex})">
+            Agregar
+          </button>
         </div>
-        <button type="button"
-          onclick="addItem(${sectionIndex}, ${itemIndex})">
-          Agregar
-        </button>
       </div>
     `).join("")}
   `).join("");
 }
+
 
 function addItem(sectionIndex, itemIndex){
   const section = sections[sectionIndex];
