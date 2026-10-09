@@ -235,12 +235,15 @@ function money(n){ return "S/ " + n.toFixed(2); }
 function renderMenu(){
   const menu = document.getElementById("menu");
 
-  const fotos = [
-    "https://images.unsplash.com/photo-1512058564366-18510be2db19?w=500",
-    "https://images.unsplash.com/photo-1547592180-85f173990554?w=500",
-    "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500",
-    "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=500"
-  ];
+  const fotos = {
+    "lomo de casa": "lomo%20de%20casa.jpeg",
+    "lomo montado o a lo pobre": "lomo%20montado%20o%20a%20lo%20pobre.jpeg",
+    "pollo saltado a lo pobre": "pollo%20saltado%20a%20lo%20pobre.jpeg",
+    "pollo saltado con tallarines verdes": "pollo%20saltado%20con%20tallarines%20verdes.jpeg",
+    "pollo saltado": "pollo%20saltado.jpeg",
+    "tallarines a la huancaina con lomo de casa": "tallarines%20a%20la%20huancaina%20con%20lomo%20de%20casa.jpeg",
+    "tallarines verdes con nuggets": "tallarines%20verdes%20con%20nuggets.jpeg"
+  };
 
   menu.innerHTML = sections.map((section, sectionIndex) => `
     <h2 class="category">${section.title}</h2>
