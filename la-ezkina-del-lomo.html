@@ -256,21 +256,21 @@ menu.innerHTML = sections.map((section, sectionIndex) => {
   let fotoCategoria = "";
 
   if (titulo.includes("saltados") && !titulo.includes("tallarin")) {
-    fotoCategoria = fotos["lomo de casa"];
+    fotoCategoria = fotos["Saltados"];
   } else if (titulo.includes("tallarin") && titulo.includes("verde")) {
-    fotoCategoria = fotos["pollo saltado con tallarines verdes"];
+    fotoCategoria = fotos["Tallarines verdes"];
   } else if (titulo.includes("huancaina")) {
-    fotoCategoria = fotos["tallarines a la huancaina con lomo de casa"];
+    fotoCategoria = fotos["Tallarines a la huancaína"];
   } else if (titulo.includes("nino")) {
-    fotoCategoria = fotos["tallarines verdes con nuggets"];
+    fotoCategoria = fotos["Platos para niños"];
   } else if (titulo.includes("carne")) {
-    fotoCategoria = fotos["lomo montado o a lo pobre"];
+    fotoCategoria = fotos["Carnes"];
   } else if (titulo.includes("entrada")) {
-    fotoCategoria = fotos["pollo saltado a lo pobre"];
+    fotoCategoria = fotos["Entradas"];
   } else if (titulo.includes("tallarin")) {
-    fotoCategoria = fotos["pollo saltado"];
+    fotoCategoria = fotos["Tallarín saltado"];
   }
-
+  
   return `
     <h2 class="category">${section.title}</h2>
     ${section.items.map((item, itemIndex) => `
