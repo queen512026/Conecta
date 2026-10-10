@@ -95,6 +95,46 @@
       .item button{padding:8px 10px}
       .cart-inner{flex-wrap:wrap}
     }
+    
+.category-photo {
+  display: block;
+  width: 100%;
+  max-width: 360px;
+  height: 210px;
+  object-fit: cover;
+  margin: 10px auto 14px;
+  border-radius: 14px;
+  cursor: zoom-in;
+}
+
+.photo-viewer {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.88);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.photo-viewer img {
+  max-width: 95vw;
+  max-height: 85vh;
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+.photo-close {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  background: white;
+  color: #17130f;
+  font-size: 28px;
+  padding: 4px 12px;
+}
+
   </style>
 </head>
 <body>
@@ -151,7 +191,15 @@
     </div>
   </div>
 
+  <div id="photoViewer" class="photo-viewer" onclick="closePhoto()">
+    <button type="button" class="photo-close"
+      onclick="event.stopPropagation(); closePhoto()">×</button>
+    <img id="largePhoto" src="" alt="Foto ampliada"
+      onclick="event.stopPropagation()">
+  </div>
+
 <script>
+
 const WHATSAPP = "51980622638";
 
 const sections = [
@@ -232,19 +280,19 @@ let cart = [];
 function money(n){ return "S/ " + n.toFixed(2); }
 
 
+
 function renderMenu(){
   const menu = document.getElementById("menu");
 
- 
-const fotos = {
-  "Saltados": "lomo%20de%20casa.jpeg",
-  "Tallarín saltado": "pollo%20saltado.jpeg",
-  "Tallarines verdes": "pollo%20saltado%20con%20tallarines%20verdes.jpeg",
-  "Tallarines a la huancaína": "tallarines%20a%20la%20huancaina%20con%20lomo%20de%20casa.jpeg",
-  "Carnes": "lomo%20montado%20o%20a%20lo%20pobre.jpeg",
-  "Platos para niños": "tallarines%20verdes%20con%20nuggets.jpeg",
-  "Entradas": "pollo%20saltado%20a%20lo%20pobre.jpeg"
-};
+  const fotos = {
+    "Saltados": "lomo%20de%20casa.jpeg",
+    "Tallarín saltado": "pollo%20saltado.jpeg",
+    "Tallarines verdes": "pollo%20saltado%20con%20tallarines%20verdes.jpeg",
+    "Tallarines a la huancaína": "tallarines%20a%20la%20huancaina%20con%20lomo%20de%20casa.jpeg",
+    "Carnes": "lomo%20montado%20o%20a%20lo%20pobre.jpeg",
+    "Platos para niños": "tallarines%20verdes%20con%20nuggets.jpeg",
+    "Entradas": "pollo%20saltado%20a%20lo%20pobre.jpeg"
+  };
 
 
 menu.innerHTML = sections.map((section, sectionIndex) => {
@@ -255,33 +303,36 @@ menu.innerHTML = sections.map((section, sectionIndex) => {
 
   let fotoCategoria = "";
 
-  if (titulo.includes("saltados") && !titulo.includes("tallarin")) {
-    fotoCategoria = fotos["Saltados"];
+  if (titulo.includes("huancaina")) {
+    fotoCategoria = fotos["Tallarines a la huancaína"];
   } else if (titulo.includes("tallarin") && titulo.includes("verde")) {
     fotoCategoria = fotos["Tallarines verdes"];
-  } else if (titulo.includes("huancaina")) {
-    fotoCategoria = fotos["Tallarines a la huancaína"];
   } else if (titulo.includes("nino")) {
     fotoCategoria = fotos["Platos para niños"];
-  } else if (titulo.includes("carne")) {
-    fotoCategoria = fotos["Carnes"];
   } else if (titulo.includes("entrada")) {
     fotoCategoria = fotos["Entradas"];
+  } else if (titulo.includes("carne")) {
+    fotoCategoria = fotos["Carnes"];
   } else if (titulo.includes("tallarin")) {
     fotoCategoria = fotos["Tallarín saltado"];
+  } else if (titulo.includes("saltado")) {
+    fotoCategoria = fotos["Saltados"];
   }
-  
+
   return `
     <h2 class="category">${section.title}</h2>
+
+    ${fotoCategoria ? `
+      <img
+        class="category-photo"
+        src="${fotoCategoria}"
+        alt="Foto de ${section.title}"
+        onclick="openPhoto(this.src)"
+      >
+    ` : ""}
+
     ${section.items.map((item, itemIndex) => `
       <div class="item">
-        ${fotoCategoria ? `
-          <img
-            class="product-photo"
-            src="${fotoCategoria}"
-            alt="${item[0]}"
-          >
-        ` : ""}
         <div class="product-details">
           <div class="name">${item[0]}</div>
           <div class="price">${money(item[1])}</div>
@@ -294,6 +345,18 @@ menu.innerHTML = sections.map((section, sectionIndex) => {
     `).join("")}
   `;
 }).join("");
+}
+
+function openPhoto(src){
+  const viewer = document.getElementById("photoViewer");
+  const largePhoto = document.getElementById("largePhoto");
+  largePhoto.src = src;
+  viewer.style.display = "flex";
+}
+
+function closePhoto(){
+  document.getElementById("photoViewer").style.display = "none";
+  document.getElementById("largePhoto").src = "";
 }
 
 function addItem(sectionIndex, itemIndex){
@@ -338,25 +401,33 @@ function changeQty(index,delta){
   renderCart(); updateCart();
 }
 
+
 function renderCart(){
   const box = document.getElementById("cartItems");
+
   if(!cart.length){
-    box.innerHTML="<p>Tu pedido está vacío.</p>";
-    document.getElementById("modalTotal").textContent="Total: S/ 0.00";
+    box.innerHTML = "<p>Tu pedido está vacío.</p>";
+    document.getElementById("modalTotal").textContent = "Total: S/ 0.00";
     return;
   }
+
   box.innerHTML = cart.map((x,i)=>`
     <div class="cart-line">
-      <div><strong>${x.name}</strong><br>${money(x.price)} × ${x.qty}</div>
+      <div>
+        <strong>${x.name}</strong><br>
+        ${money(x.price)} × ${x.qty}
+      </div>
       <div class="cart-actions">
         <button class="small" onclick="changeQty(${i},-1)">−</button>
         <button class="small" onclick="changeQty(${i},1)">+</button>
       </div>
     </div>
   `).join("");
-  const total=cart.reduce((s,x)=>s+x.qty*x.price,0);
-  document.getElementById("modalTotal").textContent="Total: "+money(total);
+
+  const total = cart.reduce((s,x)=>s+x.qty*x.price,0);
+  document.getElementById("modalTotal").textContent = "Total: " + money(total);
 }
+
 
 function sendWhatsApp(){
   if(!cart.length){ alert("Agrega al menos un producto."); return; }
