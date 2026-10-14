@@ -284,7 +284,8 @@ function money(n){ return "S/ " + n.toFixed(2); }
 function renderMenu(){
   const menu = document.getElementById("menu");
 
-  const fotos = {
+ ```javascript
+const fotos = {
     "Saltados": "lomo%20de%20casa.jpeg",
     "Tallarín saltado": "pollo%20saltado.jpeg",
     "Tallarines verdes": "pollo%20saltado%20con%20tallarines%20verdes.jpeg",
@@ -292,7 +293,7 @@ function renderMenu(){
     "Carnes": "lomo%20montado%20o%20a%20lo%20pobre.jpeg",
     "Platos para niños": "tallarines%20verdes%20con%20nuggets.jpeg",
     "Entradas": "pollo%20saltado%20a%20lo%20pobre.jpeg"
-  };
+};
 
 
 menu.innerHTML = sections.map((section, sectionIndex) => {
