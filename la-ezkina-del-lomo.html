@@ -407,14 +407,14 @@ menu.innerHTML = sections.map((section, sectionIndex) => {
 ${section.items.map((item, itemIndex) => `
   <div class="item">
  
-    ${getProductPhoto(section.title, item[0]) ? `
-      <img
-        class="product-photo"
-        src="${getProductPhoto(section.title, item[0])}"
-        alt="${item[0]}"
-        onclick="openPhoto(this.src)"
-      >
-    ` : ""}
+   ${getProductPhoto(section.title, item[0]) ? `
+  <img
+    class="product-photo"
+    src="${getProductPhoto(section.title, item[0])}"
+    alt="${item[0]}"
+    onclick="openPhoto(this.src)"
+  >
+` : ""}
     <div class="product-details">
       <div class="name">${item[0]}</div>
       <div class="price">${money(item[1])}</div>
