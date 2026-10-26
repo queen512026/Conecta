@@ -318,7 +318,55 @@ const fotos = {
     "Entradas": "teque%C3%B1os.jpg"
 };
 
+function getProductPhoto(categoria, plato) {
+  const nombre = plato.toLowerCase();
 
+  if (nombre.includes("tequeño")) {
+    return "teque%C3%B1os.jpg";
+  }
+
+  if (nombre.includes("nuggets")) {
+    return "tallarines%20verdes%20con%20nuggets.jpeg";
+  }
+
+  if (nombre.includes("pechuga") && nombre.includes("plancha")) {
+    return "pechuga%20a%20la%20plancha%20a%20lo%20pobre.jpg";
+  }
+
+  if (nombre.includes("medallón") || nombre.includes("medallon")) {
+    if (categoria === "Tallarines verdes") {
+      return "tallarin%20verde%20con%20medallon%20a%20lo%20pobre.jpg";
+    }
+  }
+
+  if (nombre.includes("pechuga") && categoria === "Tallarines verdes") {
+    return "tallarin%20verde%20con%20pechuga%20a%20lo%20pobre.jpg";
+  }
+
+  if (categoria === "Saltados" && nombre.includes("lomo de casa")) {
+    return "lomo%20de%20casa.jpeg";
+  }
+
+  if (categoria === "Saltados" && nombre.includes("pollo saltado")) {
+    return "pollo%20saltado.jpeg";
+  }
+
+  if (
+    categoria === "Tallarines a la huancaína" &&
+    nombre.includes("lomo de la casa")
+  ) {
+    return "tallarines%20a%20la%20huancaina%20con%20lomo%20de%20casa.jpeg";
+  }
+
+  if (
+    categoria === "Tallarín saltado" &&
+    nombre.includes("de la casa")
+  ) {
+    return "tallarin%20saltado%20de%20lomo%20de%20cerdo.jpg";
+  }
+
+  return "";
+}
 menu.innerHTML = sections.map((section, sectionIndex) => {
   const titulo = section.title
     .toLowerCase()
@@ -358,10 +406,11 @@ menu.innerHTML = sections.map((section, sectionIndex) => {
 
 ${section.items.map((item, itemIndex) => `
   <div class="item">
-    ${fotoCategoria ? `
+ 
+    ${getProductPhoto(section.title, item[0]) ? `
       <img
         class="product-photo"
-        src="${fotoCategoria}"
+        src="${getProductPhoto(section.title, item[0])}"
         alt="${item[0]}"
         onclick="openPhoto(this.src)"
       >
