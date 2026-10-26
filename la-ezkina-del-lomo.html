@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>La Ezkina del Lomo</title
+  <title>La Ezkina del Lomo</title>
   <style>
     :root{
       --gold:#d99a1f;
@@ -66,14 +66,37 @@
     .primary{width:100%;padding:13px;font-size:16px}
     .secondary{background:#eee;color:#333}
     .footer{text-align:center;color:var(--muted);font-size:13px;margin-top:28px}
-    .product-photo{
+.product-photo{
   width:120px;
   height:110px;
   object-fit:cover;
+  object-position:center;
   border-radius:10px;
   flex-shrink:0;
+  cursor:zoom-in;
+  display:block;
 }
 
+.item{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:13px;
+  margin:9px 0;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  box-shadow:0 2px 8px rgba(0,0,0,.04);
+}
+
+.product-details{
+  flex:1;
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:8px;
+}
 .product-details{
   flex:1;
   min-width:0;
@@ -332,20 +355,29 @@ menu.innerHTML = sections.map((section, sectionIndex) => {
       >
     ` : ""}
 
-    ${section.items.map((item, itemIndex) => `
-      <div class="item">
-        <div class="product-details">
-          <div class="name">${item[0]}</div>
-          <div class="price">${money(item[1])}</div>
-          <button type="button"
-            onclick="addItem(${sectionIndex}, ${itemIndex})">
-            Agregar
-          </button>
-        </div>
-      </div>
-    `).join("")}
-  `;
-}).join("");
+
+${section.items.map((item, itemIndex) => `
+  <div class="item">
+    ${fotoCategoria ? `
+      <img
+        class="product-photo"
+        src="${fotoCategoria}"
+        alt="${item[0]}"
+        onclick="openPhoto(this.src)"
+      >
+    ` : ""}
+    <div class="product-details">
+      <div class="name">${item[0]}</div>
+      <div class="price">${money(item[1])}</div>
+      <button type="button"
+        onclick="addItem(${sectionIndex}, ${itemIndex})">
+        Agregar
+      </button>
+    </div>
+  </div>
+`).join("")}
+    `;
+  }).join("");
 }
 
 function openPhoto(src){
